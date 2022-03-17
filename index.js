@@ -1,3 +1,5 @@
 require('./models/init')
+require('./services/init')
 // require('./test/area.test')
 // require('./test/vendor.test')
+// require('./test/position.test')
