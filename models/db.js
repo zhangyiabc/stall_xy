@@ -5,7 +5,8 @@ const sequelize = new Sequelize(config.table, config.username, config.password, 
   dialect: config.dialect,/* 选择 'mysql' | 'mariadb' | 'postgres' | 'mssql' 其一 */
   logging: (msg) => {
     // console.log(msg)
-  }
+  },
+  timezone:'+08:00',
 });
 
 

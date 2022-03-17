@@ -20,6 +20,7 @@
   "dependencies": {
     "mysql2": "^2.3.3",
     "sequelize": "^6.17.0",
+    "validate": "^5.2.0",
     "validate.js": "^0.13.1"
   }
 }
