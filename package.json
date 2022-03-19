@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/zhangyiabc/stall_xy#readme",
   "dependencies": {
+    "express": "^4.17.3",
     "mysql2": "^2.3.3",
+    "nodemailer": "^6.7.2",
     "sequelize": "^6.17.0",
     "validate": "^5.2.0",
     "validate.js": "^0.13.1"

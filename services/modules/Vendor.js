@@ -98,6 +98,9 @@ const getAllVendor = async ({page=1,size=10,vName,phone,sNo}={})=>{
         where:option
     })
     const result = JSON.parse(JSON.stringify(res.rows))
+    // 数组中如果这一项出租，那么摊主id可以获取
+    // const info = await getUserDetail(id)
+    // 这一项.info = info
     return {
         const:res.count,
         data:result

@@ -1,8 +1,10 @@
 const Area = require('../../models/modules/Area')
 const validate = require('validate.js')
-const {Sequelize} = require("sequelize");
+const { Sequelize } = require("sequelize");
 const Op = Sequelize.Op;
+const {pick} = require('../../utils/pick')
 const addArea = async (areaObj) => {
+  const obj = pick(areaObj,'name','describe')
   const rules = {
     name: {
       presence: {
@@ -26,7 +28,7 @@ const addArea = async (areaObj) => {
     }
   }
   try {
-    await validate.async(areaObj, rules)
+    await validate.async(obj, rules)
   } catch (error) {
     return {
       code: '1002',
@@ -35,7 +37,7 @@ const addArea = async (areaObj) => {
     }
   }
 
-  const ins = Area.build(areaObj)
+  const ins = Area.build(obj)
   const result = await ins.save()
   const res = result.toJSON()
 
@@ -87,9 +89,12 @@ const getAllArea = async ({
   })
   const result = JSON.parse(JSON.stringify(res.rows))
   return {
-    code:'1001',
+    code: '1001',
     count: res.count,
-    data: result
+    data: {
+      data: result,
+      size: +size
+    }
   }
 }
 

@@ -170,6 +170,14 @@ const login = async (name,password)=>{
         }
     }
 }
+
+/**
+ * 根据摊主id获取摊主的额外信息--用户名密码、电话、邮箱……
+ * @param {*} id 
+ */
+const getUserDetail =async (id) => {
+
+}
 module.exports = {
     addUser,
     deleteUser,
