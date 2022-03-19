@@ -3,16 +3,15 @@
  * @param {Object} obj 
  * @param  {...any} args 
  */
- function pick(obj,...args){
-    let newObj = {};
-    for (const key in obj) {
-      if(args.includes(key)){
-        newObj[key] = obj[key]
-      }
+function pick(obj, ...args) {
+  let newObj = {};
+  for (const key in obj) {
+    if (args.includes(key)) {
+      newObj[key] = obj[key]
     }
-    return newObj
-  
   }
-  module.exports = {
-    pick
-  }
+  return newObj
+}
+module.exports = {
+  pick
+}
