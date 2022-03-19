@@ -10,21 +10,21 @@ const { addArea, deleteArea, getAllArea, updateArea } = require("../services/mod
 // })
 
 
-// deleteArea(4).then(res => {
-//   console.log(res)
-// }).catch(err => {
-//   console.log(err)
-// })
+deleteArea(2).then(res => {
+  console.log(res)
+}).catch(err => {
+  console.log(err)
+})
 
 // getAllArea({  page: 2, size: 1 }).then(res => {
 //   console.log(19)
 //   console.log(res)
 // })
 
-updateArea({ name: 2 }, 2).then(res => {
-  console.log(25)
-  console.log(res)
-}).catch(err => {
-  console.log(27)
-  console.log(err)
-})
+// updateArea({ name: 2 }, 2).then(res => {
+//   console.log(25)
+//   console.log(res)
+// }).catch(err => {
+//   console.log(27)
+//   console.log(err)
+// })

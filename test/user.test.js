@@ -1,4 +1,4 @@
-const {addUser,deleteUser,updateUser,getAllUser} = require('../services/modules/User')
+const {addUser,deleteUser,updateUser,getAllUser,login} = require('../services/modules/User')
 // addUser({
 //     name:'yxq123456',
 //     password:'123456',
@@ -21,6 +21,13 @@ const {addUser,deleteUser,updateUser,getAllUser} = require('../services/modules/
 
 // getAllUser({name:'6',nickName:'叔'}).then(res=>{
 //     console.log(res);
+//     console.log(res.data[0].Vendor)
 // }).catch(err=>{
 //     console.log(err);
 // })
+
+login('yxq123456','123456').then(res=>{
+    console.log(res);
+}).catch(err=>{
+    console.log(err);
+})

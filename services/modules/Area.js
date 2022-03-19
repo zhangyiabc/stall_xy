@@ -1,6 +1,6 @@
 const Area = require('../../models/modules/Area')
 const validate = require('validate.js')
-const { Sequelize } = require("sequelize");
+const {Sequelize} = require("sequelize");
 const Op = Sequelize.Op;
 const addArea = async (areaObj) => {
   const rules = {
@@ -29,7 +29,7 @@ const addArea = async (areaObj) => {
     await validate.async(areaObj, rules)
   } catch (error) {
     return {
-      code: '2',
+      code: '1002',
       data: [],
       msg: error
     }
@@ -52,11 +52,27 @@ const deleteArea = async (id) => {
       id: +id
     }
   })
-  console.log(res)
+  if (res === 1) {
+    return {
+      code: '1001',
+      data: res,
+      msg: 'success',
+    }
+  } else {
+    return {
+      code: '1002',
+      data: res,
+      msg: 'fail'
+    }
+  }
+
 }
 
-const getAllArea = async ({ page = 1, size = 10, name } = {}) => {
-  console.log(name)
+const getAllArea = async ({
+  page = 1,
+  size = 10,
+  name
+} = {}) => {
   const option = {}
   if (name) {
     option.name = {
@@ -64,19 +80,20 @@ const getAllArea = async ({ page = 1, size = 10, name } = {}) => {
     }
   }
   const res = await Area.findAndCountAll({
-    attributes: ['id','name', 'describe'],
+    attributes: ['id', 'name', 'describe'],
     limit: +size,
     offset: (page - 1) * +size,
     where: option
   })
   const result = JSON.parse(JSON.stringify(res.rows))
   return {
+    code:'1001',
     count: res.count,
     data: result
   }
 }
 
-const updateArea = async (obj,id) => {
+const updateArea = async (obj, id) => {
   const rules = {
     name: {
       presence: undefined,
@@ -102,17 +119,21 @@ const updateArea = async (obj,id) => {
     await validate.async(obj, rules)
   } catch (error) {
     return {
-      code: '2',
+      code: '1002',
       data: [],
       msg: error
     }
   }
-  const res = await Area.update(obj,{
-    where:{
-      id:+id
+  const res = await Area.update(obj, {
+    where: {
+      id: +id
     }
   })
-  return res
+  return {
+    code: '1001',
+    data: res,
+    msg: 'success'
+  }
 }
 module.exports = {
   addArea,

@@ -5,21 +5,8 @@ const Op = Sequelize.Op;
 const addVendor = async (vendorObj) => {
     const rules = {
         
-        vName: {
-            presence: {
-                allowEmpty: false,
-            },
-            type: 'string',
-            length: {
-                minimum: 1,
-                maximum: 10,
-                message: "must be length is 1-10"
-            },
-        },
+        
         phone: {
-            presence: {
-                allowEmpty: false,
-            },
             type: "string",
             length: {
                 minimum: 11,
@@ -28,9 +15,7 @@ const addVendor = async (vendorObj) => {
             }
         },
         sNo: {
-            presence: {
-                allowEmpty: false,
-            },
+
             type: "string",
             length: {
                 minimum: 1,
@@ -39,15 +24,11 @@ const addVendor = async (vendorObj) => {
             },
         },
         sIdPhoto: {
-            presence: {
-                allowEmpty: false,
-            },
+
             type: "string",
         },
         email: {
-            presence: {
-                allowEmpty: false,
-            },
+
             type: 'string',
             length: {
                 minimum: 5,
@@ -124,15 +105,10 @@ const getAllVendor = async ({page=1,size=10,vName,phone,sNo}={})=>{
 }
 const updateVendor = async(obj,id)=>{
     const rules = {
-        vName: {
-            type: 'string',
-            length: {
-                minimum: 1,
-                maximum: 10,
-                message: "must be length is 1-10"
-            },
-        },
         phone: {
+            presence: {
+                allowEmpty: false,
+              },
             type: "string",
             length: {
                 minimum: 11,
@@ -141,6 +117,9 @@ const updateVendor = async(obj,id)=>{
             }
         },
         sNo: {
+            presence: {
+                allowEmpty: false,
+              },
             type: "string",
             length: {
                 minimum: 1,
@@ -149,9 +128,15 @@ const updateVendor = async(obj,id)=>{
             },
         },
         sIdPhoto: {
+            presence: {
+                allowEmpty: false,
+              },
             type: "string",
         },
         email: {
+            presence: {
+                allowEmpty: false,
+              },
             type: 'string',
             length: {
                 minimum: 5,

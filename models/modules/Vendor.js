@@ -7,25 +7,21 @@ const Vendor = sequelize.define('Vendor',{
         allowNull:false,
         defaultValue:100
     },
-    vName:{
-        type:DataTypes.STRING,
-        allowNull:false
-    },
     phone:{
         type:DataTypes.STRING,
-        allowNull:false
+        allowNull:true,
     },
     sNo:{
         type:DataTypes.STRING,
-        allowNull:false
+        allowNull:true,
     },
     sIdPhoto:{
         type:DataTypes.STRING,
-        allowNull:false
+        allowNull:true,
     },
     email:{
         type:DataTypes.STRING,
-        allowNull:false
+        allowNull:true,
     }
 },{
     paranoid: true,
