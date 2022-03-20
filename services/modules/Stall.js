@@ -2,7 +2,9 @@ const Stall = require('../../models/modules/Stall')
 const validate = require('validate.js')
 const {Sequelize} = require("sequelize");
 const User = require('../../models/modules/User');
+const { getAllUser } = require('./User');
 const Op = Sequelize.Op;
+const {getUserDetail} = require('../../utils/getUserDetail')
 //添加一个摊位信息
 const addStall = async(obj)=>{
     const rules = {
@@ -89,12 +91,15 @@ const getAllStall = async({
         limit: +size,
         offset: (page - 1) * +size,
         where: option,
-        include:{
-            model:User,
-            attributes:['id','name','nickName','VendorId']
-        }
       })
       const result = JSON.parse(JSON.stringify(res.rows))
+      //如果摊位已经出租，则获取摊主信息
+      for(let i = 0;i<res.count;i++){
+        if(result[i].status===true){
+            const info = await getUserDetail(result[i].UserId);
+            result[i].info = info;
+        }
+      }
       return {
         code:'1001',
         count: res.count,
@@ -105,21 +110,12 @@ const getAllStall = async({
 const updateStall = async(upObj,id)=>{
     const rules = {
         status:{
-            presence: {
-                allowEmpty: false,
-            },
               type:'boolean',
         },
         positionId:{
-            presence: {
-                allowEmpty: false,
-            },
               type:'number',
         },
         areaId:{
-            presence: {
-                allowEmpty: false,
-            },
             type:'number',    
         },
         toDay:{

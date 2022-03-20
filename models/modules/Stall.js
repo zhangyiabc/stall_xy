@@ -7,14 +7,18 @@ const Stall = sequelize.define('Stall',{
         allowNull:false,
         defaultValue:false,
     },
-    positionId:{
+    UserId:{
         type:DataTypes.INTEGER,
-        allowNull:false,
+        allowNull:true,
     },
-    areaId:{
-        type:DataTypes.INTEGER,
-        allowNull:false,      
-    },
+    // positionId:{
+    //     type:DataTypes.INTEGER,
+    //     allowNull:false,
+    // },
+    // areaId:{
+    //     type:DataTypes.INTEGER,
+    //     allowNull:false,      
+    // },
     toDay:{
         type:DataTypes.DATE,
         allowNull:false,

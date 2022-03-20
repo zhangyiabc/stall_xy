@@ -3,6 +3,8 @@ require('./modules/Area')
 require('./modules/Vendor')
 require('./modules/Complain')
 require('./modules/Apply')
+require('./modules/Stall')
+require('./modules/User')
 sequelize.sync({alter:true}).then((res) => {
   console.log('所有模型已同步')
 })
