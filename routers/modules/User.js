@@ -46,7 +46,7 @@ router.put('/:id',async(req,res)=>{
 //用户登录
 router.post('/login', async (req, res, next) => {
   // console.log(req.query)
-  const result = await login(req.query)
+  const result = await login(req.body)
       res.send(result)
 })
 module.exports = router

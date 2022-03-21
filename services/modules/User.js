@@ -158,7 +158,7 @@ const updateUser = async (upObj,id)=>{
 }
 //res = await  User.findOne({name:name,password})
 const login = async ({name,password}={})=>{
-    if(!name||!password){
+    if(!name || !password){
         return {
             code:'1003',
             data:[],
