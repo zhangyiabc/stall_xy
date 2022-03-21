@@ -55,7 +55,11 @@ const deleteAdmin = async (id)=>{
             id:+id
         }
     })
-    console.log(res)
+    return {
+        code:'1001',
+        data:res,
+        msg:'success'
+    }
 }
 //查找管理员信息
 const getAllAdmin = async ({page = 1,size = 10,name}={})=>{
@@ -84,9 +88,9 @@ const updateAdmin = async(adminObj,id)=>{
         password:{
             type: "string",
             length: {
-                minimum: 6,
+                minimum: 5,
                 maximum: 20,
-                message: "must be length is 6-20",
+                message: "must be length is 5-20",
               },
         }
     }
@@ -104,11 +108,50 @@ const updateAdmin = async(adminObj,id)=>{
           id:+id
         }
       })
-      return res
+      if(res==1){
+        return {
+            code:'1001',
+            data:res,
+            msg:'success'
+        }
+      }else{
+          return{
+              code:'1002',
+              data:res,
+              msg:'has success'
+          }
+      }
+      
+}
+
+//管理员登录
+const login = async ({name,password}={})=>{
+    if(!name||!password){
+        return {
+            code:'1003',
+            data:[],
+            msg:'name or password could not be null!'
+        }
+    }
+    const res = await Admin.findOne({where:{name,password}});
+    if(res===null){
+        return {
+            code:'1002',
+            data:[],
+            msg:'not find'
+        }
+    }else{
+        return {
+            code:'1001',
+            data:[],
+            msg:'success'
+        }
+    }
 }
 module.exports = {
     addAdmin,
     updateAdmin,
     deleteAdmin,
     getAllAdmin,
+    login
 }

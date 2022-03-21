@@ -1,11 +1,19 @@
 const Vendor = require("../../models/modules/Vendor")
 const validate = require('validate.js')
 const { Sequelize } = require('sequelize');
+const { pick } = require("../../utils/pick");
 const Op = Sequelize.Op;
+
 const addVendor = async (vendorObj) => {
     const rules = {
-        
-        
+        name:{
+            type:'string',
+            length:{
+                minimum:2,
+                maximum:10,
+                message:'must be length is 2-10'
+            }
+        },
         phone: {
             type: "string",
             length: {
@@ -15,7 +23,6 @@ const addVendor = async (vendorObj) => {
             }
         },
         sNo: {
-
             type: "string",
             length: {
                 minimum: 1,
@@ -24,11 +31,9 @@ const addVendor = async (vendorObj) => {
             },
         },
         sIdPhoto: {
-
             type: "string",
         },
         email: {
-
             type: 'string',
             length: {
                 minimum: 5,
@@ -76,11 +81,11 @@ const deleteVendor = async (id) =>{
         }
     }
 }
-const getAllVendor = async ({page=1,size=10,vName,phone,sNo}={})=>{
+const getAllVendor = async ({page=1,size=10,name,phone,sNo}={})=>{
     const option = {};
-    if(vName){
-        option.vName = {
-            [Op.like]:`%${vName}%`
+    if(name){
+        option.name = {
+            [Op.like]:`%${name}%`
         }
     }if(phone){
         option.phone = {
@@ -92,7 +97,7 @@ const getAllVendor = async ({page=1,size=10,vName,phone,sNo}={})=>{
         }
     }
     const res = await Vendor.findAndCountAll({
-        attributes:['id','prestige','vName','phone','sNo','sIdPhoto','email'],
+        attributes:['id','prestige','name','phone','sNo','sIdPhoto','email'],
         limit:+size,
         offset:(page - 1)* +size,
         where:option
@@ -108,6 +113,17 @@ const getAllVendor = async ({page=1,size=10,vName,phone,sNo}={})=>{
 }
 const updateVendor = async(obj,id)=>{
     const rules = {
+        name:{
+            presence: {
+                allowEmpty: false,
+              },
+            type:'string',
+            length:{
+                minimum:2,
+                maximum:10,
+                message:'must be length is 2-10'
+            }
+        },
         phone: {
             presence: {
                 allowEmpty: false,
@@ -162,12 +178,20 @@ const updateVendor = async(obj,id)=>{
             id:+id
         }
     })
-    return {
-        code:'1001',
-        data:res,
-        msg:'success'
-    };
+    if(res==1){
+        return {
+            code:'1001',
+            msg:'success'
+        }
+    }else if(res==0){
+        return{
+            code:'1003',
+            msg:'has success'
+        }
+    }
 }
+//缺少改变信誉分
+
 module.exports = {
     addVendor,
     deleteVendor,

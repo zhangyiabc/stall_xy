@@ -55,7 +55,20 @@ const addPosition = async (positionObj) => {
     data: result.toJSON()
   }
 }
-
+//删除一个位置信息
+const deletePosition = async(id) =>{
+  const res = await Position.destroy({
+    where:{
+      id:+id
+    }
+  })
+  return {
+    code:'1001',
+    data:res,
+    msg:'success'
+  }
+}
+//查找位置信息
 const getAllPosition = async ({ page = 1, size = 10, name, AreaId } = {}) => {
   const options = {}
   if (name) {
@@ -85,7 +98,57 @@ const getAllPosition = async ({ page = 1, size = 10, name, AreaId } = {}) => {
     data: result
   }
 }
+//更新位置信息
+const updatePosition = async(obj,id)=>{
+  const rules={
+    name: {
+      presence: {
+        allowEmpty: false,
+      },
+      type: 'string',
+      length: {
+        minimum: 1,
+        maximum: 20,
+        message: "must be length is 1-20"
+      },
+    },
+    photo: {
+      presence: {
+        allowEmpty: false,
+      },
+      type: "string",
+    },
+    AreaId: {
+      presence: {
+        allowEmpty: false,
+      },
+      numericality: {
+        onlyInteger: true,
+        strict: false,
+      },
+      // 拓展的方法
+      AreaIsExist: true,
+    }
+  }
+  try{
+    await validate.async(obj,rules)
+}catch(error){
+    return {
+        code:'1002',
+        data:[],
+        msg:error
+    }
+}
+const res = await Position.update(obj,{
+    where:{
+      id:+id
+    }
+  })
+  return res
+}
 module.exports = {
   addPosition,
-  getAllPosition
+  getAllPosition,
+  updatePosition,
+  deletePosition
 }

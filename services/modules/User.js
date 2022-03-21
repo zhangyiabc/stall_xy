@@ -15,9 +15,9 @@ const addUser = async (userObj) => {
             },
             type: 'string',
             length: {
-                minimum: 6,
+                minimum: 5,
                 maximum: 15,
-                message: 'must be length is 6-15',
+                message: 'must be length is 5-15',
             }
         },
         password: {
@@ -26,9 +26,9 @@ const addUser = async (userObj) => {
             },
             type: 'string',
             length: {
-                minimum: 6,
+                minimum: 5,
                 maximum: 20,
-                message: 'must be length is 6-20',
+                message: 'must be length is 5-20',
             },
         },
         nickName: {
@@ -135,7 +135,6 @@ const updateUser = async (upObj,id)=>{
     }catch(error){
         return{
             code:'1002',
-            data:[],
             msg:error
         } 
     }
@@ -144,10 +143,21 @@ const updateUser = async (upObj,id)=>{
             id:+id
         }
     })
-    return res
+    if(res==1){
+        return {
+            code:'1001',
+            msg:'success'
+        }
+    }else if(res==0){
+        return{
+            code:'1003',
+            msg:'has success'
+        }
+    }
+    
 }
 //res = await  User.findOne({name:name,password})
-const login = async (name,password)=>{
+const login = async ({name,password}={})=>{
     if(!name||!password){
         return {
             code:'1003',
@@ -165,19 +175,12 @@ const login = async (name,password)=>{
     }else{
         return {
             code:'1001',
-            data:res.dataValues,
             msg:'success'
         }
     }
 }
 
-/**
- * 根据摊主id获取摊主的额外信息--用户名密码、电话、邮箱……
- * @param {*} id 
- */
-const getUserDetail =async (id) => {
 
-}
 module.exports = {
     addUser,
     deleteUser,

@@ -7,6 +7,10 @@ const Vendor = sequelize.define('Vendor',{
         allowNull:false,
         defaultValue:100
     },
+    name:{
+        type:DataTypes.STRING,
+        allowNull:true,
+    },
     phone:{
         type:DataTypes.STRING,
         allowNull:true,
