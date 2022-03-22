@@ -47,29 +47,21 @@ const addArea = async (areaObj) => {
     msg: "success"
   }
 }
-
+//删除区信息
 const deleteArea = async (id) => {
   const res = await Area.destroy({
     where: {
       id: +id
     }
   })
-  if (res === 1) {
-    return {
-      code: '1001',
-      data: res,
-      msg: 'success',
-    }
-  } else {
-    return {
-      code: '1002',
-      data: res,
-      msg: 'fail'
-    }
-  }
-
+  return {
+    code:'1001',
+    data:res,
+    msg:`已删除${res}条数据`
 }
 
+}
+//查找区信息
 const getAllArea = async ({
   page = 1,
   size = 10,
@@ -97,8 +89,9 @@ const getAllArea = async ({
     }
   }
 }
-
-const updateArea = async (obj, id) => {
+//更新区信息
+const updateArea = async (upObj, id) => {
+  const obj = pick(upObj,'name','describe')
   const rules = {
     name: {
       presence: undefined,
@@ -134,11 +127,11 @@ const updateArea = async (obj, id) => {
       id: +id
     }
   })
-  return {
-    code: '1001',
-    data: res,
-    msg: 'success'
-  }
+  return{
+    code:'1001',
+    res:res,
+    msg:`已更改${res}条信息`
+}
 }
 module.exports = {
   addArea,

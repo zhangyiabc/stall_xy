@@ -4,7 +4,8 @@ const {Sequelize} = require("sequelize");
 const {pick} = require('../../utils/pick')
 const Op = Sequelize.Op;
 //添加投诉信息
-const addComp = async (obj) => {
+const addComp = async (addObj) => {
+    const obj = pick(addObj,'initiator','content','targetId')
     const rules = {
         initiator: {
             presence: {
@@ -50,18 +51,10 @@ const deleteComp = async (id) => {
             id: +id
         }
     })
-    if (res === 1) {
-        return {
-            code: '1001',
-            data: res,
-            msg: 'success',
-        }
-    } else {
-        return {
-            code: '1002',
-            data: res,
-            msg: 'fail'
-        }
+    return {
+        code:'1001',
+        data:res,
+        msg:`已删除${res}条数据`
     }
 }
 //更改投诉信息
@@ -95,10 +88,10 @@ const updateComp = async (upObj, id) => {
             id: +id
         }
     })
-    return {
+    return{
         code:'1001',
-        data:res,
-        msg:'success'
+        res:res,
+        msg:`已更改${res}条信息`
     }
 }
 //查找投诉信息

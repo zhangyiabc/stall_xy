@@ -4,15 +4,13 @@ const {
   Sequelize
 } = require("sequelize");
 const User = require('../../models/modules/User');
-const {
-  getAllUser
-} = require('./User');
 const Op = Sequelize.Op;
 const {
   getUserDetail
 } = require('../../utils/getUserDetail')
 //添加一个摊位信息
-const addStall = async (obj) => {
+const addStall = async (addObj) => {
+  const obj = pick(addObj,'positionId','areaId','toDay')
   const rules = {
     status: {
       type: 'boolean',
@@ -59,19 +57,11 @@ const deleteStall = async (id) => {
       id: +id
     }
   })
-  if (res === 1) {
-    return {
-      code: '1001',
-      data: res,
-      msg: 'success',
-    }
-  } else {
-    return {
-      code: '1002',
-      data: res,
-      msg: 'fail'
-    }
-  }
+  return {
+    code:'1001',
+    data:res,
+    msg:`已删除${res}条数据`
+}
 }
 //查找摊位信息
 const getAllStall = async ({
@@ -117,6 +107,7 @@ const getAllStall = async ({
 }
 //修改摊位信息
 const updateStall = async (upObj, id) => {
+  const obj = pick(upObj,'status','positionId','areaId','toDay','UserId')
   const rules = {
     status: {
       type: 'boolean',
@@ -135,7 +126,7 @@ const updateStall = async (upObj, id) => {
     }
   }
   try {
-    await validate.async(upObj, rules)
+    await validate.async(obj, rules)
   } catch (error) {
     return {
       code: '1002',
@@ -143,16 +134,16 @@ const updateStall = async (upObj, id) => {
       msg: error
     }
   }
-  const res = await Stall.update(upObj, {
+  const res = await Stall.update(obj, {
     where: {
       id: +id
     }
   })
-  return {
-    code: '1001',
-    data: res,
-    msg: 'success'
-  }
+  return{
+    code:'1001',
+    res:res,
+    msg:`已更改${res}条信息`
+}
 }
 module.exports = {
   addStall,

@@ -47,9 +47,9 @@ const addUser = async (userObj) => {
         await validate.async(obj, rules)
     } catch (error) {
         return {
-            code: '1002',
-            data: error,
-            msg: 'fail'
+            code:'1002',
+            data:[],
+            msg:error
         }
     }
     // 创建一条为空的
@@ -73,7 +73,11 @@ const deleteUser = async (id) => {
             id: +id
         }
     })
-    console.log(res)
+    return {
+        code:'1001',
+        data:res,
+        msg:`已删除${res}条数据`
+    }
 }
 
 const getAllUser = async ({
@@ -105,8 +109,9 @@ const getAllUser = async ({
     })
     const result = JSON.parse(JSON.stringify(res.rows))
     return {
+        code:'1001',
         count: res.count,
-        data: result,
+        data: result
     }
 }
 
@@ -135,24 +140,20 @@ const updateUser = async (upObj,id)=>{
     }catch(error){
         return{
             code:'1002',
+            data:[],
             msg:error
+        }
         } 
-    }
+    
     const res = await User.update(obj,{
         where:{
             id:+id
         }
     })
-    if(res==1){
-        return {
-            code:'1001',
-            msg:'success'
-        }
-    }else if(res==0){
-        return{
-            code:'1003',
-            msg:'has success'
-        }
+    return{
+        code:'1001',
+        res:res,
+        msg:`已更改${res}条信息`
     }
     
 }
@@ -160,7 +161,7 @@ const updateUser = async (upObj,id)=>{
 const login = async ({name,password}={})=>{
     if(!name || !password){
         return {
-            code:'1003',
+            code:'1002',
             data:[],
             msg:'name or password could not be null!'
         }
@@ -168,7 +169,7 @@ const login = async ({name,password}={})=>{
     const res = await User.findOne({where:{name,password}});
     if(res===null){
         return {
-            code:'1002',
+            code:'1003',
             data:[],
             msg:'not find'
         }

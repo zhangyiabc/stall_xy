@@ -5,6 +5,7 @@ const { pick } = require('../../utils/pick');
 const Op = Sequelize.Op;
 //新增管理员
 const addAdmin = async (adminObj)=>{
+    const obj = pick(adminObj,'name','password')
     const rules = {
         name:{
             presence:{
@@ -31,7 +32,7 @@ const addAdmin = async (adminObj)=>{
         
     }
     try {
-        await validate.async(adminObj,rules)
+        await validate.async(obj,rules)
     }catch(error){
         return{
             code:'1002',
@@ -39,7 +40,7 @@ const addAdmin = async (adminObj)=>{
             msg:error
         }
     }
-    const ins = Admin.build(adminObj)
+    const ins = Admin.build(obj)
     const result = await ins.save()
     const res = result.toJSON()
     return {
@@ -58,7 +59,7 @@ const deleteAdmin = async (id)=>{
     return {
         code:'1001',
         data:res,
-        msg:'success'
+        msg:`已删除${res}条数据`
     }
 }
 //查找管理员信息
@@ -77,6 +78,7 @@ const getAllAdmin = async ({page = 1,size = 10,name}={})=>{
     })
     const result = JSON.parse(JSON.stringify(res.rows))
     return {
+        code:'1001',
         count: res.count,
         data: result
     }
@@ -108,18 +110,10 @@ const updateAdmin = async(adminObj,id)=>{
           id:+id
         }
       })
-      if(res==1){
-        return {
-            code:'1001',
-            data:res,
-            msg:'success'
-        }
-      }else{
-          return{
-              code:'1002',
-              data:res,
-              msg:'has success'
-          }
+      return{
+          code:'1001',
+          res:res,
+          msg:`已更改${res}条信息`
       }
       
 }
@@ -128,7 +122,7 @@ const updateAdmin = async(adminObj,id)=>{
 const login = async ({name,password}={})=>{
     if(!name||!password){
         return {
-            code:'1003',
+            code:'1002',
             data:[],
             msg:'name or password could not be null!'
         }
@@ -136,7 +130,7 @@ const login = async ({name,password}={})=>{
     const res = await Admin.findOne({where:{name,password}});
     if(res===null){
         return {
-            code:'1002',
+            code:'1003',
             data:[],
             msg:'not find'
         }

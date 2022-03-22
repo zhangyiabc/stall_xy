@@ -1,37 +1,33 @@
 const express = require('express')
 const {addAdmin,deleteAdmin,updateAdmin,getAllAdmin,login} = require('../../services/modules/Admin')
+const { handSend } = require('../../utils/handSend')
 const router = express.Router()
+
 
 //添加位置信息
 router.post('/', async (req, res,next) => {
-    const result = await addAdmin(req.query)
-    if (result.code == '1001') {
-        res.send(result)
-    }
+    const result = await addAdmin(req.body)
+    handSend(result, res)
 })
 //查找位置信息
 router.get('/', async (req, res, next) => {
     const result = await getAllAdmin(req.query)
-    if (result.code == '1001') {
-        res.send(result)
-    }
+    handSend(result, res)
 })
 //删除位置信息
-router.delete('/:id',async (req,res,next) => {
-    const result = await deleteAdmin(req.params.id)
-    if(result.code == '1001'){
-      res.send(result)
-    }
+router.delete('/',async (req,res,next) => {
+    const result = await deleteAdmin(req.body.id)
+    handSend(result, res)
 })
 //更改位置信息
-router.put('/:id',async(req,res,next)=>{
+router.put('/',async(req,res,next)=>{
     // console.log(req.query,req.params.id);
-    const result = await updateAdmin(req.query,req.params.id)
-    res.send(result)
+    const result = await updateAdmin(req.body,req.body.id)
+    handSend(result, res)
 })
 //登录
 router.post('/login',async(req,res,next)=>{
-    const result = await login(req.query)
-    res.send(result)
+    const result = await login(req.body)
+    handSend(result, res)
 })
 module.exports = router

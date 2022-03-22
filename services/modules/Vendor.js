@@ -5,6 +5,7 @@ const { pick } = require("../../utils/pick");
 const Op = Sequelize.Op;
 
 const addVendor = async (vendorObj) => {
+    const obj = pick(vendorObj,'name','phone','sNo','sIdPhoto','email')
     const rules = {
         name:{
             type:'string',
@@ -46,9 +47,9 @@ const addVendor = async (vendorObj) => {
         await validate.async(vendorObj, rules);
     } catch (error) {
         return {
-            code: '2',
-            data: [],
-            msg: error
+            code:'1002',
+            data:[],
+            msg:error
         }
     }
     
@@ -61,26 +62,20 @@ const addVendor = async (vendorObj) => {
         msg:'success'
     }
 }
+//删除摊主信息
 const deleteVendor = async (id) =>{
     const res = await Vendor.destroy({
         where:{
             id:+id
         }
     })
-    if(res===1){
-        return {
-            code:'1001',
-            data:res,
-            msg:'success'
-        }
-    }else{
-        return{
-            code:'1002',
-            data:res,
-            msg:'fail'
-        }
+    return {
+        code:'1001',
+        data:res,
+        msg:`已删除${res}条数据`
     }
 }
+//查找摊主信息
 const getAllVendor = async ({page=1,size=10,name,phone,sNo}={})=>{
     const option = {};
     if(name){
@@ -107,11 +102,13 @@ const getAllVendor = async ({page=1,size=10,name,phone,sNo}={})=>{
     // const info = await getUserDetail(id)
     // 这一项.info = info
     return {
-        const:res.count,
-        data:result
+        code:'1001',
+        count: res.count,
+        data: result
     }
 }
-const updateVendor = async(obj,id)=>{
+const updateVendor = async(upObj,id)=>{
+    const obj = pick(upObj,'name','phone','sNo','sIdPhoto','email')
     const rules = {
         name:{
             presence: {
@@ -178,16 +175,10 @@ const updateVendor = async(obj,id)=>{
             id:+id
         }
     })
-    if(res==1){
-        return {
-            code:'1001',
-            msg:'success'
-        }
-    }else if(res==0){
-        return{
-            code:'1003',
-            msg:'has success'
-        }
+    return{
+        code:'1001',
+        res:res,
+        msg:`已更改${res}条信息`
     }
 }
 //缺少改变信誉分

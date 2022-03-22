@@ -1,52 +1,35 @@
 const express = require('express')
 const {addUser,getAllUser,deleteUser,updateUser,login} = require('../../services/modules/User')
+const { handSend } = require('../../utils/handSend')
 const router = express.Router()
+
 //添加用户信息
 router.post('/', async (req, res, next) => {
   // console.log(req.query)
-  const result = await addUser(req.query)
-    if(result.code==='1001'){
-      res.send({
-        code:'1001',
-        data:[],
-        msg:'success'
-    })
-    }
+  const result = await addUser(req.body)
+    handSend(result, res)
 })
 //查找用户信息
 router.get('/', async (req, res, next) => {
   const result = await getAllUser(req.query)
-  if(result.count!=0){
-    res.send({
-      code:'1001',
-      data:result,
-      msg:'success'})
-  }else{
-    res.send({
-      code:'1002',
-      data:[],
-      msg:'not found'
-    })
-  }
+  handSend(result, res)
     
   
 })
 //删除用户信息
-router.delete('/:id',async (req,res) => {
-  const result = await deleteUser(req.params.id)
-  if(result.code == '1001'){
-    res.send(result)
-  }
+router.delete('/',async (req,res) => {
+  const result = await deleteUser(req.body.id)
+  handSend(result, res)
 })
 //更改用户信息
-router.put('/:id',async(req,res)=>{
-  const result = await updateUser(req.query,req.params.id)
-    res.send(result)
+router.put('/',async(req,res)=>{
+  const result = await updateUser(req.body,req.body.id)
+    handSend(result, res)
 })
 //用户登录
 router.post('/login', async (req, res, next) => {
   // console.log(req.query)
   const result = await login(req.body)
-      res.send(result)
+      handSend(result, res)
 })
 module.exports = router

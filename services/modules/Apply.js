@@ -3,10 +3,12 @@ const validate = require('validate.js')
 const {
     Sequelize
 } = require("sequelize");
+const { pick } = require('../../utils/pick');
 const Op = Sequelize.Op;
 
 //新增申请信息
-const addApply = async (obj) => {
+const addApply = async (addObj) => {
+    const obj = pick(addObj,'name','stallId','time')
     const rules = {
         name: {
             presence: {
@@ -54,18 +56,10 @@ const deleteApply = async (id) => {
             id: +id
         }
     })
-    if (res === 1) {
-        return {
-            code: '1001',
-            data: res,
-            msg: 'success',
-        }
-    } else {
-        return {
-            code: '1002',
-            data: res,
-            msg: 'fail'
-        }
+    return {
+        code:'1001',
+        data:res,
+        msg:`已删除${res}条数据`
     }
 }
 //查找申请信息
@@ -102,7 +96,8 @@ const getAllApply = async ({
     }
 }
 //更改申请信息
-const updateApply = async (obj, id) => {
+const updateApply = async (upObj, id) => {
+    const obj = pick(upObj,'name','stallId','time')
     const rules = {
         name: {
             type: "string",
@@ -131,11 +126,11 @@ const updateApply = async (obj, id) => {
           id: +id
         }
       })
-      return {
-        code: '1001',
-        data: res,
-        msg: 'success'
-      }
+      return{
+        code:'1001',
+        res:res,
+        msg:`已更改${res}条信息`
+    }
 }
 
 module.exports = {

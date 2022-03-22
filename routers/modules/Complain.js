@@ -1,37 +1,28 @@
 const express = require('express')
 const { addComp,getAllComp,deleteComp,updateComp } = require('../../services/modules/Complain')
+const { handSend } = require('../../utils/handSend')
 const router = express.Router()
 //添加区信息
 router.post('/', async (req, res, next) => {
   // console.log(req.query)
-  const result = await addComp(req.query)
+  const result = await addComp(req.body)
   console.log(result)
-  if (result.code == '1001') {
-    res.send(result)
-  }else if(result.code == '1002'){
-    res.send({code:'1002',err:result.msg,msg:'fail'})
-  }
+  handSend(result, res)
 })
 //查找区信息
 router.get('/', async (req, res, next) => {
   const result = await getAllComp(req.query)
-  if (result.code == '1001') {
-    res.send(result)
-  }
+  handSend(result, res)
 })
 //删除区信息
-router.delete('/:id',async (req,res) => {
-  const result = await deleteComp(req.params.id)
-  if(result.code == '1001'){
-    res.send(result)
-  }
+router.delete('/',async (req,res) => {
+  const result = await deleteComp(req.body.id)
+  handSend(result, res)
 })
 //更改区信息
-router.put('/:id',async(req,res)=>{
-  const result = await updateComp(req.query,req.params.id)
-  if(result.code == '1001'){
-    res.send(result)
-  }
+router.put('/',async(req,res)=>{
+  const result = await updateComp(req.body,req.body.id)
+  handSend(result, res)
 })
 
 module.exports = router

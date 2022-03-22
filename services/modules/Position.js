@@ -65,8 +65,8 @@ const deletePosition = async(id) =>{
   return {
     code:'1001',
     data:res,
-    msg:'success'
-  }
+    msg:`已删除${res}条数据`
+}
 }
 //查找位置信息
 const getAllPosition = async ({ page = 1, size = 10, name, AreaId } = {}) => {
@@ -99,7 +99,8 @@ const getAllPosition = async ({ page = 1, size = 10, name, AreaId } = {}) => {
   }
 }
 //更新位置信息
-const updatePosition = async(obj,id)=>{
+const updatePosition = async(upObj,id)=>{
+  const obj = pick(upObj,'name','photo','AreaId')
   const rules={
     name: {
       presence: {
@@ -144,7 +145,11 @@ const res = await Position.update(obj,{
       id:+id
     }
   })
-  return res
+  return{
+    code:'1001',
+    res:res,
+    msg:`已更改${res}条信息`
+}
 }
 module.exports = {
   addPosition,

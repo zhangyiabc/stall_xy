@@ -5,7 +5,7 @@ const router = express.Router()
 //添加区信息
 router.post('/', async (req, res, next) => {
   // console.log(req.query)
-  const result = await addArea(req.query)
+  const result = await addArea(req.body)
   handSend(result, res)
 })
 //查找区信息
@@ -14,13 +14,13 @@ router.get('/', async (req, res, next) => {
   handSend(result, res)
 })
 //删除区信息
-router.delete('/:id',async (req,res,next) => {
-  const result = await deleteArea(req.params.id)
+router.delete('/',async (req,res,next) => {
+  const result = await deleteArea(req.body.id)
   handSend(result, res)
 })
 //更改区信息
-router.put('/:id',async(req,res,next)=>{
-  const result = await updateArea(req.query,req.params.id)
+router.put('/',async(req,res,next)=>{
+  const result = await updateArea(req.body,req.body.id)
   handSend(result, res)
 })
 
