@@ -79,7 +79,7 @@ const deleteUser = async (id) => {
         msg:`已删除${res}条数据`
     }
 }
-
+//获取所有用户
 const getAllUser = async ({
     page = 1,
     size = 10,
@@ -114,7 +114,28 @@ const getAllUser = async ({
         data: result
     }
 }
+// 获取单个用户信息
+const getUser = async({id}={})=>{
+    const res = await User.findOne({
+        attributes:['id','name','nickName','VendorId'],
+        where:{
+            id: +id,
+        },
+        include:{
+            model:Vendor,
+            attributes:['id','prestige','phone','sNo','sIdPhoto','email']
+        }
+    })
+    const result = JSON.parse(JSON.stringify(res.dataValues))
+    return {
+        code:'1001',
+        data: result
+    }
+}
+    
 
+
+//更新用户信息
 const updateUser = async (upObj,id)=>{
     const obj = pick(upObj,'password','nickName');
     const rules = {
@@ -187,5 +208,6 @@ module.exports = {
     deleteUser,
     getAllUser,
     updateUser,
-    login
+    login,
+    getUser,
 }

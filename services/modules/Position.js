@@ -41,7 +41,7 @@ const addPosition = async (positionObj) => {
     await validate.async(obj, rules);
   } catch (error) {
     return {
-      code: '2',
+      code: '1002',
       data: [],
       msg: error
     }
