@@ -103,9 +103,6 @@ const updatePosition = async(upObj,id)=>{
   const obj = pick(upObj,'name','photo','AreaId')
   const rules={
     name: {
-      presence: {
-        allowEmpty: false,
-      },
       type: 'string',
       length: {
         minimum: 1,
@@ -114,15 +111,9 @@ const updatePosition = async(upObj,id)=>{
       },
     },
     photo: {
-      presence: {
-        allowEmpty: false,
-      },
       type: "string",
     },
     AreaId: {
-      presence: {
-        allowEmpty: false,
-      },
       numericality: {
         onlyInteger: true,
         strict: false,

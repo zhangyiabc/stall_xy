@@ -54,6 +54,6 @@ app.use('/api/user', require('./modules/User'))
 app.use('/api/vendor', require('./modules/Vendor'))
 
 
-app.listen(10086, () => {
-  console.log('已开放10086端口')
+app.listen(8686, () => {
+  console.log('已开放8686端口')
 })

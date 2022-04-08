@@ -8,13 +8,13 @@ const Op = Sequelize.Op;
 
 //新增申请信息
 const addApply = async (addObj) => {
-    const obj = pick(addObj,'name','stallId','time')
+    const obj = pick(addObj,'UserId','stallId','time')
     const rules = {
-        name: {
+        UserId: {
             presence: {
                 allowEmpty: false,
             },
-            type: "string",
+            type: "number",
         },
         stallId: {
             presence: {
@@ -66,15 +66,13 @@ const deleteApply = async (id) => {
 const getAllApply = async ({
     page = 1,
     size = 10,
-    name,
+    UserId,
     stallId,
     status,
 } = {}) => {
     const option = {}
-    if (name) {
-        option.name = {
-            [Op.like]: `%${name}%`
-        }
+    if(UserId){
+        option.UserId = UserId;
     }
     if (stallId) {
         option.stallId = stallId;
@@ -83,7 +81,7 @@ const getAllApply = async ({
         option.status = status;
     }
     const res = await Apply.findAndCountAll({
-        attributes: ['id', 'name', 'stallId', 'status'],
+        attributes: ['id', 'UserId', 'stallId', 'status'],
         limit: +size,
         offset: (page - 1) * +size,
         where: option
@@ -97,18 +95,15 @@ const getAllApply = async ({
 }
 //更改申请信息
 const updateApply = async (upObj, id) => {
-    const obj = pick(upObj,'name','stallId','time')
+    const obj = pick(upObj,'UserId','stallId','time')
     const rules = {
-        name: {
-            type: "string",
+        UserId: {
+            type: "number",
         },
         stallId: {
             type: "number",
         },
         time: {
-            presence: {
-                allowEmpty: false,
-            },
             type: "date"
         }
     }

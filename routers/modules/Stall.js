@@ -15,12 +15,12 @@ router.get('/', async (req, res, next) => {
   handSend(result, res)
 })
 //删除区信息
-router.delete('/handSend(result, res)',async (req,res) => {
+router.delete('/',async (req,res) => {
   const result = await deleteStall(req.body.id)
   handSend(result, res)
 })
 //更改区信息
-router.put('/handSend(result, res)',async(req,res)=>{
+router.put('/',async(req,res)=>{
   const result = await updateStall(req.body,req.body.id)
   handSend(result, res)
 })

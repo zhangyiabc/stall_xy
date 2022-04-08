@@ -74,7 +74,7 @@ const getAllArea = async ({
     }
   }
   const res = await Area.findAndCountAll({
-    attributes: ['id', 'name', 'describe'],
+    attributes: ['id', 'name', 'describe','createdAt'],
     limit: +size,
     offset: (page - 1) * +size,
     where: option

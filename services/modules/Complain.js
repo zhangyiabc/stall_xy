@@ -5,13 +5,13 @@ const {pick} = require('../../utils/pick')
 const Op = Sequelize.Op;
 //添加投诉信息
 const addComp = async (addObj) => {
-    const obj = pick(addObj,'initiator','content','targetId')
+    const obj = pick(addObj,'UserId','content','targetId')
     const rules = {
-        initiator: {
+        UserId: {
             presence: {
                 allowEmpty: false,
             },
-            type: 'string',
+            type: 'number',
         },
         content: {
             presence: {
@@ -59,13 +59,13 @@ const deleteComp = async (id) => {
 }
 //更改投诉信息
 const updateComp = async (upObj, id) => {
-    const obj = pick(upObj,'content','initiator');
+    const obj = pick(upObj,'content','UserId');
     const rules = {
-        initiator: {
+        UserId: {
             presence: {
                 allowEmpty: false,
             },
-            type: 'string',
+            type: 'number',
         },
         content: {
             presence: {
@@ -98,19 +98,17 @@ const updateComp = async (upObj, id) => {
 const getAllComp = async ({
     page=1,
     size = 10,
-    initiator,
+    UserId,
     targetId,
 } = {})=>{
     const option = {};
-    if(initiator){
-        option.initiator = {
-            [Op.like]: `%${initiator}%`
-        }
+    if(UserId){
+        option.UserId = UserId
     }if(targetId){
         option.targetId = targetId;
     }
     const res = await Complain.findAndCountAll({
-        attributes:['initiator','content','targetId'],
+        attributes:['UserId','content','targetId'],
         limit: +size,
         offset: (page - 1) * +size,
         where: option

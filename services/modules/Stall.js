@@ -7,22 +7,23 @@ const User = require('../../models/modules/User');
 const Op = Sequelize.Op;
 const {
   getUserDetail
-} = require('../../utils/getUserDetail')
+} = require('../../utils/getUserDetail');
+const { pick } = require('../../utils/pick');
 //添加一个摊位信息
 const addStall = async (addObj) => {
-  const obj = pick(addObj,'positionId','areaId','toDay')
+  const obj = pick(addObj,'PositionId','AreaId','toDay')
   const rules = {
     status: {
       type: 'boolean',
 
     },
-    positionId: {
+    PositionId: {
       presence: {
         allowEmpty: false,
       },
       type: 'number',
     },
-    areaId: {
+    AreaId: {
       presence: {
         allowEmpty: false,
       },
@@ -68,25 +69,25 @@ const getAllStall = async ({
   page = 1,
   size = 10,
   status,
-  positionId,
-  areaId,
+  PositionId,
+  AreaId,
   UserId
 } = {}) => {
   const option = {}
   if (status) {
     option.status = status;
   }
-  if (positionId) {
-    option.positionId = positionId;
+  if (PositionId) {
+    option.PositionId = PositionId;
   }
-  if (areaId) {
-    option.areaId = areaId;
+  if (AreaId) {
+    option.AreaId = AreaId;
   }
   if (UserId) {
     option.UserId = UserId;
   }
   const res = await Stall.findAndCountAll({
-    attributes: ['id', 'status', 'positionId', 'areaId', 'toDay', 'UserId'],
+    attributes: ['id', 'status', 'PositionId', 'AreaId', 'toDay', 'UserId'],
     limit: +size,
     offset: (page - 1) * +size,
     where: option,
@@ -107,15 +108,15 @@ const getAllStall = async ({
 }
 //修改摊位信息
 const updateStall = async (upObj, id) => {
-  const obj = pick(upObj,'status','positionId','areaId','toDay','UserId')
+  const obj = pick(upObj,'status','PositionId','AreaId','toDay','UserId')
   const rules = {
     status: {
       type: 'boolean',
     },
-    positionId: {
+    PositionId: {
       type: 'number',
     },
-    areaId: {
+    AreaId: {
       type: 'number',
     },
     toDay: {
