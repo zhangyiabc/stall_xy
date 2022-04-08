@@ -62,15 +62,9 @@ const updateComp = async (upObj, id) => {
     const obj = pick(upObj,'content','UserId');
     const rules = {
         UserId: {
-            presence: {
-                allowEmpty: false,
-            },
             type: 'number',
         },
         content: {
-            presence: {
-                allowEmpty: false,
-            },
             type: 'string',
         },
     }
