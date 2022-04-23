@@ -20,7 +20,7 @@ const Stall = sequelize.define('Stall',{
     //     allowNull:false,      
     // },
     toDay:{
-        type:DataTypes.DATE,
+        type:DataTypes.STRING,
         allowNull:true,
     }
 },{

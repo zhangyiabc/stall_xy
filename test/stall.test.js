@@ -1,4 +1,4 @@
-const {addStall,deleteStall,updateStall,getAllStall} = require('../services/modules/Stall')
+const {addStall,deleteStall,updateStall,getAllStall,getStallByPositionId} = require('../services/modules/Stall')
 const date = new Date()
 
 // addStall({positionId:1,areaId:3,toDay:date}).then(res=>{
@@ -21,3 +21,8 @@ const date = new Date()
 // deleteStall(1).then(res=>{
 //     console.log(res);
 // })
+getStallByPositionId({
+  PositionId:3
+}).then(r=>{
+  console.log(r)
+})

@@ -4,6 +4,7 @@ const Op = Sequelize.Op;
 const Position = require('../../models/modules/Position');
 const { pick } = require('../../utils/pick');
 const Area = require('../../models/modules/Area')
+const { addStall, deleteStall, getStallByPositionId } = require('../../services/modules/Stall')
 // 新增一个位置信息
 const addPosition = async (positionObj) => {
   const obj = pick(positionObj, 'name', 'photo', 'AreaId')
@@ -49,10 +50,15 @@ const addPosition = async (positionObj) => {
 
   const ins = Position.build(obj)
   const result = await ins.save()
+  const res = result.toJSON()
+  await addStall({
+    PositionId: res.id,
+    AreaId: res.AreaId
+  })
   return {
     code: "1001",
     msg: "success",
-    data: result.toJSON()
+    data: res
   }
 }
 //删除一个位置信息
@@ -62,6 +68,11 @@ const deletePosition = async(id) =>{
       id:+id
     }
   })
+  const stall = await getStallByPositionId({
+    PositionId: id
+  })
+  console.log(stall)
+  await deleteStall(stall.data.id)
   return {
     code:'1001',
     data:res,

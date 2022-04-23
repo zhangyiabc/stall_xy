@@ -1,10 +1,18 @@
 const Area = require('../../models/modules/Area')
 const validate = require('validate.js')
-const { Sequelize } = require("sequelize");
+const {
+  Sequelize
+} = require("sequelize");
 const Op = Sequelize.Op;
-const {pick} = require('../../utils/pick')
+const {
+  pick
+} = require('../../utils/pick');
+const {
+  getAllPosition,
+  deletePosition
+} = require('./Position');
 const addArea = async (areaObj) => {
-  const obj = pick(areaObj,'name','describe')
+  const obj = pick(areaObj, 'name', 'describe')
   const rules = {
     name: {
       presence: {
@@ -54,11 +62,20 @@ const deleteArea = async (id) => {
       id: +id
     }
   })
+  const result = await getAllPosition({
+    AreaId: id
+  })
+  if (result.const && result.const !== 0) {
+    for (let i = 0; i < result.const; i++) {
+      await deletePosition(result.data[i].id)
+    }
+  }
+
   return {
-    code:'1001',
-    data:res,
-    msg:`已删除${res}条数据`
-}
+    code: '1001',
+    data: res,
+    msg: `已删除${res}条数据`
+  }
 
 }
 //查找区信息
@@ -74,7 +91,7 @@ const getAllArea = async ({
     }
   }
   const res = await Area.findAndCountAll({
-    attributes: ['id', 'name', 'describe','createdAt'],
+    attributes: ['id', 'name', 'describe', 'createdAt'],
     limit: +size,
     offset: (page - 1) * +size,
     where: option
@@ -91,7 +108,7 @@ const getAllArea = async ({
 }
 //更新区信息
 const updateArea = async (upObj, id) => {
-  const obj = pick(upObj,'name','describe')
+  const obj = pick(upObj, 'name', 'describe')
   const rules = {
     name: {
       presence: undefined,
@@ -127,11 +144,11 @@ const updateArea = async (upObj, id) => {
       id: +id
     }
   })
-  return{
-    code:'1001',
-    res:res,
-    msg:`已更改${res}条信息`
-}
+  return {
+    code: '1001',
+    res: res,
+    msg: `已更改${res}条信息`
+  }
 }
 module.exports = {
   addArea,

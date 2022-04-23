@@ -1,5 +1,8 @@
 const Stall = require('../../models/modules/Stall')
 const validate = require('validate.js')
+const Position = require('../../models/modules/Position')
+const Area = require('../../models/modules/Area')
+
 const {
   Sequelize
 } = require("sequelize");
@@ -8,10 +11,12 @@ const Op = Sequelize.Op;
 const {
   getUserDetail
 } = require('../../utils/getUserDetail');
-const { pick } = require('../../utils/pick');
+const {
+  pick
+} = require('../../utils/pick');
 //添加一个摊位信息
 const addStall = async (addObj) => {
-  const obj = pick(addObj,'PositionId','AreaId','toDay')
+  const obj = pick(addObj, 'PositionId', 'AreaId', 'toDay')
   const rules = {
     status: {
       type: 'boolean',
@@ -30,7 +35,7 @@ const addStall = async (addObj) => {
       type: 'number',
     },
     toDay: {
-      type: 'date'
+      type: 'string'
     }
   }
   try {
@@ -59,10 +64,10 @@ const deleteStall = async (id) => {
     }
   })
   return {
-    code:'1001',
-    data:res,
-    msg:`已删除${res}条数据`
-}
+    code: '1001',
+    data: res,
+    msg: `已删除${res}条数据`
+  }
 }
 //查找摊位信息
 const getAllStall = async ({
@@ -74,7 +79,8 @@ const getAllStall = async ({
   UserId
 } = {}) => {
   const option = {}
-  if (status) {
+  status = status == 'true' ? true : false
+  if (typeof status == 'boolean') {
     option.status = status;
   }
   if (PositionId) {
@@ -91,6 +97,14 @@ const getAllStall = async ({
     limit: +size,
     offset: (page - 1) * +size,
     where: option,
+    include:{
+      model:Position,
+      attributes:['id','name','photo'],
+      include:{
+        model:Area,
+        attributes:['id','name']
+      }
+    }
   })
   const result = JSON.parse(JSON.stringify(res.rows))
   //如果摊位已经出租，则获取摊主信息
@@ -108,7 +122,8 @@ const getAllStall = async ({
 }
 //修改摊位信息
 const updateStall = async (upObj, id) => {
-  const obj = pick(upObj,'status','PositionId','AreaId','toDay','UserId')
+  console.log(upObj)
+  const obj = pick(upObj, 'status', 'PositionId', 'AreaId', 'toDay', 'UserId')
   const rules = {
     status: {
       type: 'boolean',
@@ -120,7 +135,7 @@ const updateStall = async (upObj, id) => {
       type: 'number',
     },
     toDay: {
-      type: 'date'
+      type: 'string'
     },
     UserId: {
       type: 'number',
@@ -140,15 +155,55 @@ const updateStall = async (upObj, id) => {
       id: +id
     }
   })
-  return{
-    code:'1001',
-    res:res,
-    msg:`已更改${res}条信息`
+  return {
+    code: '1001',
+    res: res,
+    msg: `已更改${res}条信息`
+  }
 }
+// 获取单个摊位信息
+const getOneStall = async ({
+  id
+} = {}) => {
+  const res = await Stall.findOne({
+    attributes: ['id', 'toDay', 'createdAt', 'status', 'PositionId', 'AreaId', 'UserId'],
+    where: {
+      id: +id,
+    },
+    include: {
+      model: Position,
+      attributes: ['id', 'name', 'photo'],
+      include: {
+        model: Area,
+        attributes: ['id', 'name', 'describe'],
+      }
+    }
+  })
+  const result = JSON.parse(JSON.stringify(res.dataValues))
+  return {
+    code: '1001',
+    data: result
+  }
+}
+//根据位置id查找摊位信息
+const getStallByPositionId = async ({PositionId}={}) =>{
+  const res = await Stall.findOne({
+    attributes:['id', 'toDay', 'createdAt', 'status', 'PositionId', 'AreaId', 'UserId'],
+    where:{
+      PositionId
+    }
+  })
+  const result = JSON.parse(JSON.stringify(res.dataValues))
+  return {
+    code:'1001',
+    data:result
+  }
 }
 module.exports = {
   addStall,
   deleteStall,
   updateStall,
-  getAllStall
+  getAllStall,
+  getOneStall,
+  getStallByPositionId
 }

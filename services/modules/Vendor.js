@@ -111,9 +111,9 @@ const updateVendor = async(upObj,id)=>{
     const obj = pick(upObj,'name','phone','sNo','sIdPhoto','email')
     const rules = {
         name:{
-            presence: {
-                allowEmpty: false,
-              },
+            // presence: {
+            //     allowEmpty: false,
+            //   },
             type:'string',
             length:{
                 minimum:2,
@@ -122,9 +122,9 @@ const updateVendor = async(upObj,id)=>{
             }
         },
         phone: {
-            presence: {
-                allowEmpty: false,
-              },
+            // presence: {
+            //     allowEmpty: false,
+            //   },
             type: "string",
             length: {
                 minimum: 11,
@@ -133,9 +133,9 @@ const updateVendor = async(upObj,id)=>{
             }
         },
         sNo: {
-            presence: {
-                allowEmpty: false,
-              },
+            // presence: {
+            //     allowEmpty: false,
+            //   },
             type: "string",
             length: {
                 minimum: 1,
@@ -144,15 +144,15 @@ const updateVendor = async(upObj,id)=>{
             },
         },
         sIdPhoto: {
-            presence: {
-                allowEmpty: false,
-              },
+            // presence: {
+            //     allowEmpty: false,
+            //   },
             type: "string",
         },
         email: {
-            presence: {
-                allowEmpty: false,
-              },
+            // presence: {
+            //     allowEmpty: false,
+            //   },
             type: 'string',
             length: {
                 minimum: 5,
@@ -181,11 +181,41 @@ const updateVendor = async(upObj,id)=>{
         msg:`已更改${res}条信息`
     }
 }
-//缺少改变信誉分
-
+//改变信誉分
+const updatePrestige = async (upObj,id) => {
+    const obj = pick(upObj,'prestige')
+    const rules = {
+        prestige:{
+            presence: {
+                allowEmpty: false,
+              },
+            type:"number",
+        }
+    }
+    try{
+        await validate.async(obj,rules)
+    }catch(error){
+        return {
+            code: '1002',
+            data: [],
+            msg: error
+          }
+    }
+    const res = await Vendor.update(obj, {
+        where: {
+          id: +id
+        }
+      })
+      return{
+        code:'1001',
+        res:res,
+        msg:`已更改${res}条信息`
+    }
+}
 module.exports = {
     addVendor,
     deleteVendor,
     getAllVendor,
     updateVendor,
+    updatePrestige
 }

@@ -1,13 +1,13 @@
 const {addComp,deleteComp,updateComp,getAllComp} = require('../services/modules/Complain')
-addComp({
-    UserId:4,
-    content:'这是一个投诉信息',
-    targetId:5
-}).then(res=>{
-    console.log(res);
-}).catch(err=>{
-    console.log(err);
-})
+// addComp({
+//     UserId:4,
+//     content:'这是一个投诉信息',
+//     targetId:5
+// }).then(res=>{
+//     console.log(res);
+// }).catch(err=>{
+//     console.log(err);
+// })
 
 // updateComp({
 //     targetId:1,
@@ -19,10 +19,10 @@ addComp({
 //     console.log(err);
 // })
 
-// getAllComp({targetId:5}).then(res=>{
+// getAllComp().then(res=>{
 //     console.log(res);
 // }).catch(err=>{
-//     console.log(err);
+//     // console.log(err);
 // })
 
 // deleteComp(1).then(res=>{

@@ -6,7 +6,7 @@ const path = require('path')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.resolve(__dirname, '../public/upload'))
+        cb(null, path.resolve(__dirname, '../../public/upload'))
     },
     filename: function (req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
@@ -28,14 +28,14 @@ const upload = multer({
         }
     }
 })
-router.put('/',upload.single('mxy'), (req, res) => {
+router.post('/',upload.single('mxy'), (req, res) => {
     console.log(req.file)
     console.log(req.body)
     // 复制 req.body.name 文件夹下
     // 删除这个文件
     res.send({
         code:'1001',
-        data:`localhost:10086/upload/${req.file.filename}`,
+        data:`http://localhost:8686/upload/${req.file.filename}`,
         msg:'1001'
     })
   })
